@@ -1,0 +1,1 @@
+TEXT_CHANNEL_SUFFIX = "-voice"
