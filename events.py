@@ -37,7 +37,7 @@ async def on_voice_channel_disconnect(member: discord.Member, channel: discord.V
 
 @bot.event
 async def on_ready():
-    print("Started")
+    print("Bot ready")
 
 
 @bot.event
