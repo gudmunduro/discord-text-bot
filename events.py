@@ -1,10 +1,10 @@
 import discord
 from bot import bot
-from constants import TEXT_CHANNEL_SUFFIX
+from constants import TEXT_CHANNEL_SUFFIX, CATEGORY_SUFFIX
 from utils import create_voice_text_channel, remove_voice_text_channel, get_role_by_name, format_text_channel_name
 
 
-# Internal events
+# Sub-events
 
 
 async def on_voice_channel_connect(member: discord.Member, channel: discord.VoiceChannel):
@@ -29,8 +29,6 @@ async def on_voice_channel_disconnect(member: discord.Member, channel: discord.V
 
     await member.remove_roles(channel_role)
 
-    if len(channel.members) == 0:
-        await remove_voice_text_channel(guild, text_channel_name, role_name)
 
 # Discord api events
 
@@ -42,7 +40,13 @@ async def on_ready():
 
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
-    if before.channel is None and after.channel is not None:
+    if before.channel is not None and after.channel is not None and before.channel != after.channel:
+        # Switched to another channel
+        await on_voice_channel_disconnect(member, before.channel)
+        await on_voice_channel_connect(member, after.channel)
+    elif before.channel is None and after.channel is not None:
+        # Connected
         await on_voice_channel_connect(member, after.channel)
     elif before.channel is not None and after.channel is None:
+        # Disconnected
         await on_voice_channel_disconnect(member, before.channel)
