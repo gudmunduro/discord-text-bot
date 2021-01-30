@@ -19,10 +19,6 @@ def format_text_channel_name(name: str) -> str:
     return name.lower().replace(" ", "-").replace("$", "")
 
 
-async def create_voice_text_channel_role(guild: discord.Guild, name: str):
-    await guild.create_role(name=name)
-
-
 async def get_channel_tag_role(guild: discord.Guild):
     if (role := get_role_by_name(guild, CHANNEL_TAG_ROLE_NAME)) is not None:
         return role
@@ -37,6 +33,10 @@ async def is_created_by_bot(channel: discord.TextChannel):
 
 async def is_bot_admin(user: discord.User):
     return True
+
+
+async def create_voice_text_channel_role(guild: discord.Guild, name: str):
+    await guild.create_role(name=name)
 
 
 async def get_text_channel_category(guild: discord.Guild, category: discord.CategoryChannel) -> discord.CategoryChannel:
