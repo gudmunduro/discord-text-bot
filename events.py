@@ -27,7 +27,8 @@ async def on_voice_channel_disconnect(member: discord.Member, channel: discord.V
 
     channel_role = get_role_by_name(guild, role_name)
 
-    await member.remove_roles(channel_role)
+    if channel_role is not None:
+        await member.remove_roles(channel_role)
 
 
 # Discord api events
