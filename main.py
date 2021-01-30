@@ -2,6 +2,7 @@ import os
 import commands
 import events
 import dotenv
+
 from bot import bot
 
 dotenv.load_dotenv()

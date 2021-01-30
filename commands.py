@@ -2,8 +2,8 @@ from datetime import datetime
 
 import discord
 
-from discord.ext import commands
 from bot import bot
+from discord.ext import commands
 from constants import BOT_NAME, INSUFFICIENT_PERMISSION_MESSAGE
 from utils import get_channel_tag_role, remove_voice_text_channel, is_bot_admin
 
