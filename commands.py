@@ -5,12 +5,12 @@ import discord
 from bot import bot
 from discord.ext import commands
 from constants import BOT_NAME, INSUFFICIENT_PERMISSION_MESSAGE
-from utils import get_channel_tag_role, remove_voice_text_channel, is_bot_admin
+from utils import get_channel_tag_role, remove_voice_text_channel, has_commands_permission, get_role_by_name
 
 
 @bot.command(name="deleteall")
 async def delete_all(ctx: commands.Context):
-    if not await is_bot_admin(ctx.message.author):
+    if not await has_commands_permission(ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -28,7 +28,7 @@ async def delete_all(ctx: commands.Context):
 
 @bot.command(name="listall")
 async def list_all(ctx: commands.Context):
-    if not await is_bot_admin(ctx.message.author):
+    if not await has_commands_permission(ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -42,9 +42,27 @@ async def list_all(ctx: commands.Context):
     await ctx.send(f"Channels created by bot:\n{channel_text}")
 
 
+@bot.command(name="resetroles")
+async def reset_roles(ctx: commands.Context):
+    if not await has_commands_permission(ctx.message.author):
+        await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
+        return
+
+    tag_role = await get_channel_tag_role(ctx.guild)
+
+    channel_names = [channel.name for channel in ctx.guild.channels
+                     if tag_role in channel.overwrites]
+    roles = [get_role_by_name(ctx.guild, name) for name in channel_names]
+
+    async for member in ctx.guild.fetch_members(limit=None):
+        await member.remove_roles(*roles)
+
+    await ctx.send("All roles reset")
+
+
 @bot.command(name="clearafter")
 async def clear_messages(ctx: commands.Context, after_date: str, after_time: str):
-    if not await is_bot_admin(ctx.message.author):
+    if not await has_commands_permission(ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 

@@ -31,7 +31,7 @@ async def is_created_by_bot(channel: discord.TextChannel):
     return tag_role in channel.overwrites
 
 
-async def is_bot_admin(user: discord.User):
+async def has_commands_permission(user: discord.User):
     return True
 
 
