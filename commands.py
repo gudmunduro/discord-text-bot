@@ -1,9 +1,8 @@
-from datetime import datetime
-
 import discord
 
 from bot import bot
 from discord.ext import commands
+from datetime import datetime
 from constants import BOT_NAME, INSUFFICIENT_PERMISSION_MESSAGE
 from utils import get_channel_tag_role, remove_voice_text_channel, has_commands_permission, get_role_by_name
 
@@ -36,10 +35,9 @@ async def list_all(ctx: commands.Context):
 
     channel_names = [channel.name for channel in ctx.guild.channels
                      if tag_role in channel.overwrites]
+    channel_list_text = "\n".join(channel_names)
 
-    channel_text = "\n".join(channel_names)
-
-    await ctx.send(f"Channels created by bot:\n{channel_text}")
+    await ctx.send(f"Channels created by bot:\n{channel_list_text}")
 
 
 @bot.command(name="resetroles")
