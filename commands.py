@@ -26,6 +26,22 @@ async def delete_all(ctx: commands.Context):
     await ctx.send("All channels and roles deleted")
 
 
+@bot.command(name="listall")
+async def list_all(ctx: commands.Context):
+    if not await is_bot_admin(ctx.message.author):
+        await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
+        return
+
+    tag_role = await get_channel_tag_role(ctx.guild)
+
+    channel_names = [channel.name for channel in ctx.guild.channels
+                     if tag_role in channel.overwrites]
+
+    channel_text = "\n".join(channel_names)
+
+    await ctx.send(f"Channels created by bot:\n{channel_text}")
+
+
 @bot.command(name="clearafter")
 async def clear_messages(ctx: commands.Context, after_date: str, after_time: str):
     if not await is_bot_admin(ctx.message.author):
