@@ -7,7 +7,7 @@ from constants import BOT_NAME, INSUFFICIENT_PERMISSION_MESSAGE
 from utils import get_channel_tag_role, remove_voice_text_channel, has_commands_permission, get_role_by_name
 
 
-@bot.command(name="deleteall")
+@bot.command(name="da")
 async def delete_all(ctx: commands.Context):
     if not await has_commands_permission(ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
@@ -23,6 +23,28 @@ async def delete_all(ctx: commands.Context):
 
     await tag_role.delete()
     await ctx.send("All channels and roles deleted")
+
+
+@bot.command(name="dd")
+async def delete_duplicates(ctx: commands.Context):
+    if not await has_commands_permission(ctx.message.author):
+        await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
+        return
+
+    tag_role = await get_channel_tag_role(ctx.guild)
+    found_names = set()
+
+    for channel in ctx.guild.channels:
+        if tag_role in channel.overwrites:
+            if channel.name in found_names:
+                await channel.delete()
+                if channel.category is not None and len(channel.category.channels) == 0:
+                    await channel.category.delete()
+            else:
+                found_names.add(channel.name)
+
+    await tag_role.delete()
+    await ctx.send("All duplicate channels deleted")
 
 
 @bot.command(name="listall")
