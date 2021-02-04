@@ -31,8 +31,10 @@ async def is_created_by_bot(channel: discord.TextChannel):
     return tag_role in channel.overwrites
 
 
-async def has_commands_permission(user: discord.User):
-    return True
+async def has_commands_permission(guild: discord.Guild, member: discord.Member):
+    mod_role = get_role_by_name(guild, "Mods")
+
+    return mod_role in member.roles
 
 
 async def create_voice_text_channel_role(guild: discord.Guild, name: str):

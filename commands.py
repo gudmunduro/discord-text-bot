@@ -9,7 +9,7 @@ from utils import get_channel_tag_role, remove_voice_text_channel, has_commands_
 
 @bot.command(name="da")
 async def delete_all(ctx: commands.Context):
-    if not await has_commands_permission(ctx.message.author):
+    if not await has_commands_permission(ctx.guild, ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -27,7 +27,7 @@ async def delete_all(ctx: commands.Context):
 
 @bot.command(name="dd")
 async def delete_duplicates(ctx: commands.Context):
-    if not await has_commands_permission(ctx.message.author):
+    if not await has_commands_permission(ctx.guild, ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -49,7 +49,7 @@ async def delete_duplicates(ctx: commands.Context):
 
 @bot.command(name="listall")
 async def list_all(ctx: commands.Context):
-    if not await has_commands_permission(ctx.message.author):
+    if not await has_commands_permission(ctx.guild, ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -64,7 +64,7 @@ async def list_all(ctx: commands.Context):
 
 @bot.command(name="resetroles")
 async def reset_roles(ctx: commands.Context):
-    if not await has_commands_permission(ctx.message.author):
+    if not await has_commands_permission(ctx.guild, ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
@@ -82,7 +82,7 @@ async def reset_roles(ctx: commands.Context):
 
 @bot.command(name="clearafter")
 async def clear_messages(ctx: commands.Context, after_date: str, after_time: str):
-    if not await has_commands_permission(ctx.message.author):
+    if not await has_commands_permission(ctx.guild, ctx.message.author):
         await ctx.send(INSUFFICIENT_PERMISSION_MESSAGE)
         return
 
